@@ -7,8 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
-def run_train(target: str):
-    data_path = Path("data/processed/features.csv")
+def run_train(target: str, data_path: str):
+    data_path = Path(data_path)
     df = pd.read_csv(data_path)
 
     if target not in df.columns:
@@ -31,6 +31,7 @@ def run_train(target: str):
     run_dir = Path("models/runs") / run_id
     (run_dir / "model").mkdir(parents=True, exist_ok=True)
     (run_dir / "metrics").mkdir(parents=True, exist_ok=True)
+    (run_dir / "predictions").mkdir(parents=True, exist_ok=True)
 
     joblib.dump(model, run_dir / "model" / "model.joblib")
 
@@ -39,8 +40,15 @@ def run_train(target: str):
         json.dumps(metrics, indent=2), encoding="utf-8"
     )
 
+    pred_df = X_test.copy()
+    pred_df[target] = y_test.values
+    pred_df["prediction"] = preds
+    pred_df.to_csv(run_dir / "predictions" / "holdout_predictions.csv", index=False)
+
     Path("models/registry").mkdir(parents=True, exist_ok=True)
     Path("models/registry/latest.txt").write_text(run_id, encoding="utf-8")
 
     print("Run ID:", run_id)
     print("Accuracy:", acc)
+    print("Wrote:", run_dir / "predictions" / "holdout_predictions.csv")
+

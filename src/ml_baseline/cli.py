@@ -3,6 +3,8 @@ import typer
 import pandas as pd
 import numpy as np
 
+from ml_baseline.train import run_train
+
 app = typer.Typer(help="Week 3 ML baseline system CLI")
 
 @app.callback()
@@ -36,13 +38,13 @@ def make_sample_data(
 
     typer.echo(f"Wrote {len(df)} rows to {out_path}")
 
-from ml_baseline.train import run_train
-
 @app.command()
 def train(
     target: str = typer.Option(..., "--target"),
+    data: str = typer.Option("data/processed/features.csv", "--data"),
 ):
-    run_train(target=target)
+    run_train(target=target, data_path=data)
+
 
 
 

@@ -5,28 +5,20 @@ import numpy as np
 
 app = typer.Typer(help="Week 3 ML baseline system CLI")
 
-
 @app.callback()
 def main():
-    """Root command for ml-baseline."""
     pass
-
 
 @app.command()
 def helpme():
-    """Sanity command to confirm the CLI runs."""
-    typer.echo("ml-baseline CLI is working ✅")
-
+    typer.echo("ml-baseline CLI is working")
 
 @app.command("make-sample-data")
 def make_sample_data(
-    out: str = typer.Option("data/processed/features.csv", help="Output CSV path"),
-    rows: int = typer.Option(200, help="Number of rows"),
-    seed: int = typer.Option(7, help="Random seed"),
+    out: str = typer.Option("data/processed/features.csv"),
+    rows: int = typer.Option(200),
+    seed: int = typer.Option(7),
 ):
-    """
-    Create a tiny sample dataset and write it to data/processed/features.csv.
-    """
     rng = np.random.default_rng(seed)
 
     df = pd.DataFrame(
@@ -43,4 +35,15 @@ def make_sample_data(
     df.to_csv(out_path, index=False)
 
     typer.echo(f"Wrote {len(df)} rows to {out_path}")
+
+from ml_baseline.train import run_train
+
+@app.command()
+def train(
+    target: str = typer.Option(..., "--target"),
+):
+    run_train(target=target)
+
+
+
 

@@ -1,15 +1,22 @@
 from pathlib import Path
 import json
 import time
+
 import pandas as pd
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
-def run_train(target: str, data_path: str):
+from ml_baseline.schema import default_schema
+
+
+def run_train(target: str, data_path: str = "data/processed/features.csv") -> None:
     data_path = Path(data_path)
     df = pd.read_csv(data_path)
+
+    schema = default_schema()
+    schema.validate(df)
 
     if target not in df.columns:
         raise ValueError(f"Target column not found: {target}")
@@ -18,7 +25,10 @@ def run_train(target: str, data_path: str):
     y = df[target]
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
+        X,
+        y,
+        test_size=0.2,
+        random_state=42,
     )
 
     model = LogisticRegression(max_iter=500)
@@ -29,6 +39,7 @@ def run_train(target: str, data_path: str):
 
     run_id = str(int(time.time()))
     run_dir = Path("models/runs") / run_id
+
     (run_dir / "model").mkdir(parents=True, exist_ok=True)
     (run_dir / "metrics").mkdir(parents=True, exist_ok=True)
     (run_dir / "predictions").mkdir(parents=True, exist_ok=True)
@@ -37,7 +48,8 @@ def run_train(target: str, data_path: str):
 
     metrics = {"accuracy": float(acc)}
     (run_dir / "metrics" / "holdout_metrics.json").write_text(
-        json.dumps(metrics, indent=2), encoding="utf-8"
+        json.dumps(metrics, indent=2),
+        encoding="utf-8",
     )
 
     pred_df = X_test.copy()
@@ -51,4 +63,3 @@ def run_train(target: str, data_path: str):
     print("Run ID:", run_id)
     print("Accuracy:", acc)
     print("Wrote:", run_dir / "predictions" / "holdout_predictions.csv")
-

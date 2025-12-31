@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 
 from ml_baseline.train import run_train
+from ml_baseline.predict import run_predict
 
 app = typer.Typer(help="Week 3 ML baseline system CLI")
 
@@ -44,6 +45,13 @@ def train(
     data: str = typer.Option("data/processed/features.csv", "--data"),
 ):
     run_train(target=target, data_path=data)
+
+@app.command()
+def predict(
+    data: str = typer.Option("data/processed/features.csv", "--data"),
+    output: str = typer.Option("data/predictions/predictions.csv", "--output"),
+):
+    run_predict(data_path=data, output_path=output)
 
 
 

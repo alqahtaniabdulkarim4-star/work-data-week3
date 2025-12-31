@@ -1,0 +1,24 @@
+[project]
+name = "ml-baseline"
+version = "0.1.0"
+description = "Week 3 baseline ML system (CLI + data contract)"
+requires-python = ">=3.10"
+dependencies = [
+  "pandas",
+  "numpy",
+  "scikit-learn",
+  "joblib",
+  "typer>=0.12",
+]
+
+[project.scripts]
+ml-baseline = "ml_baseline.cli:app"
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

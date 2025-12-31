@@ -1,0 +1,5 @@
+pandas
+numpy
+scikit-learn
+joblib
+typer>=0.12

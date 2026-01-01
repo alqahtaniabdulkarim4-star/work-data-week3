@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Dict, List
 import pandas as pd
 
+
 @dataclass(frozen=True)
 class DataSchema:
     required_columns: List[str]
@@ -36,6 +37,7 @@ class DataSchema:
         self.validate_columns(df)
         self.validate_dtypes(df)
 
+
 def default_schema() -> DataSchema:
     required = ["id", "x1", "x2", "target"]
     dtypes = {
@@ -45,4 +47,5 @@ def default_schema() -> DataSchema:
         "target": "int",
     }
     return DataSchema(required_columns=required, dtypes=dtypes)
+
 

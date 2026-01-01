@@ -6,7 +6,7 @@ import numpy as np
 from ml_baseline.train import run_train
 from ml_baseline.predict import run_predict
 
-app = typer.Typer(help="Week 3 ML baseline system CLI")
+app = typer.Typer(help="Week 3-4 ML baseline system CLI")
 
 
 @app.callback()
@@ -58,6 +58,7 @@ def predict(
     run_id: str = typer.Option(None, "--run-id"),
 ):
     run_predict(data_path=data, output_path=output, run_id=run_id)
+
 
 
 

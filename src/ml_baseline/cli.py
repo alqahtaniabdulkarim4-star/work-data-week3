@@ -8,13 +8,16 @@ from ml_baseline.predict import run_predict
 
 app = typer.Typer(help="Week 3 ML baseline system CLI")
 
+
 @app.callback()
 def main():
     pass
 
+
 @app.command()
 def helpme():
     typer.echo("ml-baseline CLI is working")
+
 
 @app.command("make-sample-data")
 def make_sample_data(
@@ -39,6 +42,7 @@ def make_sample_data(
 
     typer.echo(f"Wrote {len(df)} rows to {out_path}")
 
+
 @app.command()
 def train(
     target: str = typer.Option(..., "--target"),
@@ -46,13 +50,14 @@ def train(
 ):
     run_train(target=target, data_path=data)
 
+
 @app.command()
 def predict(
     data: str = typer.Option("data/processed/features.csv", "--data"),
     output: str = typer.Option("data/predictions/predictions.csv", "--output"),
+    run_id: str = typer.Option(None, "--run-id"),
 ):
-    run_predict(data_path=data, output_path=output)
-
+    run_predict(data_path=data, output_path=output, run_id=run_id)
 
 
 

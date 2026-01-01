@@ -30,3 +30,29 @@ uv run ml-baseline predict
 
 Output:
  • data/predictions/predictions.csv
+
+
+
+ ## Project Structure
+ work-data-week3/
+├── README.md
+├── pyproject.toml
+├── .gitignore
+├── src/
+│   └── ml_baseline/
+│       ├── cli.py
+│       ├── train.py
+│       ├── predict.py
+│       ├── schema.py
+│       ├── metrics.py
+│       └── registry.py
+├── data/
+│   ├── processed/
+│   │   └── features.csv
+│   └── predictions/
+│       └── predictions.csv
+└── models/
+├── runs/
+│   └── <run_id>/
+└── registry/
+└── latest.txt
